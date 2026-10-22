@@ -1,0 +1,14 @@
+# Host test build: sc with the PicoCalc curses shim and the scripted backend
+# (port/be_host.c), built like the PicoCalc (unsigned char, the same buffer
+# sizes).  make -f Makefile.host; then SCKEYS='=5\n' build-host/sc prints the screen.
+SRC = abbrev cmds color crypt format frame gram help interp lex pipe range sc screen sort version vi vmtbl xmalloc compat
+CFLAGS = -funsigned-char -O1 -g -Iport -Isc -DHAVE_STDBOOL_H -DHAVE_ISFINITE -DHAVE_ATTR_T -DHAVE_ATTR_GET -DFBUFLEN=1024 -DPATHLEN=256 -DSIGVOID -DNONOTIMEOUT -DLIBDIR=\"/sc\" -Wno-deprecated-declarations
+OBJ = $(SRC:%=build-host/%.o) build-host/curses.o build-host/be_host.o build-host/csv.o build-host/port.o
+build-host/sc: $(OBJ)
+	$(CC) -o $@ $(OBJ) -lm
+build-host/%.o: sc/%.c port/curses.h
+	@mkdir -p build-host
+	$(CC) $(CFLAGS) -c $< -o $@
+build-host/%.o: port/%.c port/curses.h
+	@mkdir -p build-host
+	$(CC) $(CFLAGS) -c $< -o $@

@@ -1,0 +1,55 @@
+SC ALPHA CHECKLIST
+==================
+For the PicoCalc. Tick each line; note anything odd with what you
+pressed just before it. Put the samples (budget.sc, loan.sc,
+dates.sc, convert.sc) and the size tests (big1-5.csv,
+formulas.sc) in /sc first, and mem=show in /sc/sc.cfg.
+
+1. KEYS
+[ ] Arrows move; PgUp/PgDn move a page; Home goes to A0
+[ ] =12.5 Enter puts 12.50 in a cell
+[ ] =A0*2 Enter on the cell below gives 25.00
+[ ] <Total Enter puts left-aligned text; >Total right-aligned
+[ ] On a cell holding 12: e, A, Backspace, 5, Enter makes it 15
+    (e opens the number in e> mode; A moves to the end, ready to type)
+[ ] x clears a cell
+[ ] f then Left/Right narrows/widens a column; Enter keeps it
+[ ] f Space 18 0 5 Enter on a =@now cell shows date and time
+[ ] F Ctrl+d %Y Enter on a =@now cell shows the year
+[ ] g B12 Enter goes to B12
+[ ] Backspace and Del work while typing; Esc cancels
+[ ] Ctrl+l redraws the screen
+[ ] ? shows help; a letter picks a page; Esc (or q) leaves help
+[ ] =12 then Esc Esc: the line is cancelled, the cell stays empty
+[ ] Ctrl+t then C turns colour on, and again turns it off
+
+2. FILES
+[ ] G budget.sc Enter opens the sample, figures as SC.TXT says
+[ ] Change a number in it; the totals follow
+[ ] P mine.sc Enter saves; q; start sc again; G mine.sc opens it
+[ ] P mine.sc again over the same file: saved, no error
+[ ] P mine.csv saves; open mine.csv on the PC: values are there
+[ ] A CSV saved by Excel (or LibreOffice) opens with G
+[ ] Power off and on; the saved files are still there and open
+
+3. QUITTING
+[ ] q with nothing changed: straight back to the menu
+[ ] q after a change, n: back to the menu, nothing saved
+[ ] q after a change to a named file, y: saved, then the menu
+[ ] q after a change to a new sheet, y: back to the sheet to save
+
+4. CLOCK
+[ ] dates.sc: "Now" matches your watch, in your time zone
+
+5. SIZE (note the free memory, top right, after each)
+[ ] G big1.csv  (125 rows)       free: ____ K
+[ ] G big2.csv  (250 rows)       free: ____ K
+[ ] G big3.csv  (500 rows)       free: ____ K
+[ ] G big4.csv  (1000 rows)      free: ____ K
+[ ] G big5.csv  (2000 rows)      free: ____ K  or "has to stop"
+[ ] G formulas.sc: g H501 Enter shows 1493639.82
+[ ] If one was too big: the "sc has to stop" screen appeared, a
+    key went back to the menu, and SC.SAVE (if you said y) opens
+
+Start sc fresh (from the menu) before each size test, so each
+one starts with the same free memory.

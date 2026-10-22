@@ -1,0 +1,115 @@
+SC FOR THE PICOCALC
+===================
+sc is the Unix spreadsheet calculator: James Gosling's 1982
+program, grown by many hands since and still in use. This is
+version 7.16 on the PicoCalc. Needs a Pico 2 or Pico 2 W.
+
+INSTALL
+Copy the zip's pico2-apps and sc folders to the top of the SD card,
+then pick sc from the menu. Your files go in /sc too.
+
+The sc folder has four sample sheets to try: budget.sc, loan.sc,
+dates.sc and convert.sc (G, then the name, Enter). sc/size holds
+big CSV files for testing how much fits: G size/big1.csv.
+
+THE FEW KEYS YOU NEED
+Arrows         move between cells
+=              type a number or a formula, then Enter
+                 =12.5    =A0*2    =@sum(A0:A9)
+<              type text (left-aligned); > right-aligned
+e  E           edit the number / the text in a cell
+x              clear a cell
+f              then Left/Right: column narrower/wider,
+                 Down/Up: fewer/more decimal places; Enter
+g              go to a cell (type B12, Enter)
+P              save:  P, then a name (budget.sc), Enter
+G              open:  G, then a name, Enter
+Esc, Esc       cancel what you're typing (see GETTING OUT)
+?              help: 16 pages of it (Esc or q leaves help)
+q              quit to the menu (asks if there's unsaved work)
+
+Ctrl+letter is a control key (sc's help writes ^E for Ctrl+e).
+Shift makes no difference to it, but the key after it can:
+Ctrl+t then C turns colour on; Ctrl+t then c turns off the
+cell highlight instead.
+F1-F10 are sc's function keys; Home, End, PgUp, PgDn, Del, Ins
+work too.
+
+CSV FILES
+A name ending in .csv opens and saves as comma-separated values,
+so you can trade files with Excel, LibreOffice or a script.
+Numbers become numbers, everything else text. Saving as .csv
+keeps the values you see, not the formulas: keep a .sc copy of
+anything with formulas, and save a .csv when you want to share it.
+
+DATES AND TIMES
+@now and the date functions use the clock that settime, VirtualT
+or the FTP server set, in the time zone (tz=) from settime.cfg or
+virtualt/virtualt.cfg. Without one, the date is 1970.
+
+A time is a number of seconds (since 1970), so give its column a
+date format or it shows as a long number. See FORMATS.
+
+FORMATS
+f, Space, then three numbers and Enter sets a column: its width,
+its decimal places, and a format number. 0 is ordinary numbers,
+4 is a date (21 Oct 2026). The scrc.txt file that comes with sc adds:
+  5  2026-10-21 20:14     f, Space, 18 0 5, Enter
+  6  2026-10-21           f, Space, 12 0 6, Enter
+  7  20:14                f, Space,  7 0 7, Enter
+  8  $1,234.50 / ($1,234.50) for negatives
+  9  25.6%  (the cell holds 0.256)
+Edit scrc.txt to change them or add your own (formats 5 to 9). A date
+format starts with a Ctrl+d character, which a text editor can't
+easily type, so copy one of the lines that are there.
+F (capital) formats one cell: F, Ctrl+d, %Y and so on, Enter.
+
+GETTING OUT OF THINGS
+One rule: Esc backs out one step.
+  typing a line (i>)   Esc, Esc   the first Esc goes to e>, the
+                                  second cancels the line
+  help, f, a y/n       Esc        back to the sheet
+  sc itself            q          asks before losing unsaved work:
+                                  y = let me save first, n = quit
+Ctrl+g also cancels whatever you're in the middle of.
+
+UPPER AND LOWER CASE
+Commands are case-sensitive: f and F, p and P, g and G are
+different commands. The top line shows i> while you're typing
+and e> in sc's vi-style edit mode, where letters are commands.
+Esc goes from i> to e>; i or A goes back to typing.
+
+BUILDING SHEETS ON THE PC
+A .sc file is plain text, one command per line, for example:
+  let A0 = @now
+  leftstring B0 = "Rent"
+  let B1 = 1200
+  let B2 = @sum(B0:B1)
+  format A 18 0 5
+Write one in Notepad, copy it to /sc over FTP, and open it with G.
+Or run sc itself on the PC (it's in most Linux distributions as
+"sc") and copy the file across. For data from Excel, save it as
+CSV; formulas and formats are then added on the PicoCalc.
+
+SETTINGS
+/sc/sc.cfg may hold:
+  font=large    bigger letters, 40 columns instead of 64
+  beep=off      no beep on errors
+  mem=show      free memory at the right end of the top line
+  keys=show     each key's code there too (for bug reports)
+sc's own settings (set commands, as in its help page C) and the
+ready-made formats go in /sc/scrc.txt (or /sc/.scrc, as on Unix).
+
+BIG SHEETS
+The PicoCalc has room for about 6,000 cells (say 750 rows of 8
+columns); somewhere past 7,000 it runs out. If sc
+runs out of memory it offers to save what it has as SC.SAVE in
+/sc, says so on the screen, and goes back to the menu on a key.
+
+WHAT'S MISSING
+There are no other programs to talk to, so pipes ("| program"),
+the ! shell escape, @ext functions and plugins report an error.
+Encryption isn't there either.
+
+sc is public domain. This port, with its source, credits and
+licences: github.com/ctorkildson-netizen/picocalc-sc

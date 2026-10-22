@@ -1,0 +1,29 @@
+.\" Carsten Kunze, 2016
+.Dd August 5, 2016
+.Dt XPNAME 1
+.Sh NAME
+.Nm xpname
+.Nd open pname with mouse support in a separate xterm
+.Sh SYNOPSIS
+.Nm
+.Op Ar "pname options"
+.Sh DESCRIPTION
+There are use cases for
+.Nm pname
+where it is desirable to start it in a separate X window.
+.Nm
+just starts
+.Do Nm xterm Fl e Dc
+with
+.Nm pname
+and the
+.Ar "pname options"
+as argument and enables mouse support.
+File names with spaces need to be enclosed in single or double quotes
+.Po Sq Li \(aq
+or
+.Sq Li \(dq
+.Pc
+.Em and
+the spaces needs to be protected with a backslash
+.Pq Sq \(rs .

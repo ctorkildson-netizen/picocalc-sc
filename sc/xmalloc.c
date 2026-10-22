@@ -1,0 +1,70 @@
+/*
+ * A safer saner malloc, for careless programmers
+ * $Revision: 7.16 $
+ */
+
+#include <stdlib.h>
+#include <limits.h>
+#include "compat.h"
+#include "sc.h"
+
+static void fatal(char *);
+
+#define	MAGIC	(double)1234567890.12344
+
+void *
+scxmalloc(size_t n)
+{
+	void *ptr;
+
+	if ((ptr = malloc(n + sizeof(double))) == NULL)
+		fatal("scxmalloc: no memory");
+	*((double *) ptr) = MAGIC;		/* magic number */
+	return(ptr + sizeof(double));
+}
+
+/* we make sure realloc will do a malloc if needed */
+void *
+scxrealloc(void *ptr, size_t n)
+{
+	if (ptr == NULL)
+		return(scxmalloc(n));
+
+	ptr -= sizeof(double);
+	if (*((double *) ptr) != MAGIC)
+		fatal("scxrealloc: storage not scxmalloc'ed");
+
+	if ((ptr = realloc(ptr, n + sizeof(double))) == NULL)
+		fatal("scxmalloc: no memory");
+	*((double *) ptr) = MAGIC;		/* magic number */
+	return(ptr + sizeof(double));
+}
+
+void
+scxfree(void *p)
+{
+	if (p == NULL)
+		fatal("scxfree: NULL");
+	p -= sizeof(double);
+	if (*((double *) p) != MAGIC)
+		fatal("scxfree: storage not malloc'ed");
+	free(p);
+}
+
+void port_release_reserve(void);
+void port_fatal_note(const char *why, const char *savename);
+
+static void
+fatal(char *str)
+{
+#ifndef PSC
+    port_release_reserve();	/* PicoCalc: room for the save below */
+    deraw(1);
+#endif /* PSC */
+    fprintf(stderr, "%s\n", str);
+#ifndef PSC
+    diesave();
+    port_fatal_note(str, "SC.SAVE");	/* sc.c's SAVENAME */
+#endif /* PSC */
+    exit(1);
+}

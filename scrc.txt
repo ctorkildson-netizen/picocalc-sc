@@ -1,0 +1,9 @@
+# sc settings for the PicoCalc, read each time sc starts.
+# Ready-made number formats for the f command:
+#   f, Space, then width, decimals, format number, Enter
+#   e.g.  f, Space, 18 0 5, Enter
+format 5 = "%Y-%m-%d %H:%M"
+format 6 = "%Y-%m-%d"
+format 7 = "%H:%M"
+format 8 = "$#,0.00;($#,0.00)"
+format 9 = "0.0%"
