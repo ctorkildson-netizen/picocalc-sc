@@ -13,7 +13,8 @@ it when you quit.
   `@now` and the date functions
 - running out of memory offers to save the sheet first, and says so
 
-**SC.TXT** is the user's guide, and **TESTING.TXT** the alpha checklist.
+**GUIDE.TXT** walks through a first sheet in ten minutes, **SC.TXT** is the
+reference, and **TESTING.TXT** the alpha checklist.
 
 ## Install
 

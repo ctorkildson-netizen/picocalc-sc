@@ -1,5 +1,5 @@
-SC FOR THE PICOCALC
-===================
+SC FOR THE PICOCALC   (new to sc? start with GUIDE.TXT)
+====================================================
 sc is the Unix spreadsheet calculator: James Gosling's 1982
 program, grown by many hands since and still in use. This is
 version 7.16 on the PicoCalc. Needs a Pico 2 or Pico 2 W.

@@ -1,0 +1,113 @@
+SC ON THE PICOCALC: YOUR FIRST SHEET
+====================================
+Ten minutes, start to finish: a small monthly budget with a total,
+percentages, money formatting, a row added in the middle, and a
+saved file. SC.TXT has the reference; this is the walk-through.
+
+Every step was tried exactly as written. Keys are in capitals only
+where the capital matters: sc treats f and F, p and P as different
+commands.
+
+
+1. START
+Pick sc from the menu. You see an empty grid: columns A, B, C...
+across the top, rows 0, 1, 2... down the side (sc counts rows from
+0). The highlighted cell is A0. The top line tells you which cell
+you're on and what's in it.
+
+
+2. TYPE THE LABELS
+Text goes in with < (left-aligned) and Enter.
+  <Rent  Enter        then Down arrow
+  <Food  Enter        Down
+  <Car   Enter        Down
+  <Fun   Enter        Down, Down (leave row 4 empty)
+  <Total Enter
+
+You now have five labels in column A, rows 0 to 5.
+
+
+3. TYPE THE NUMBERS
+Numbers and formulas go in with =. Move to B0 (Right arrow, then
+Up until the top line says B0) and type:
+  =1200  Enter        Down
+  =450   Enter        Down
+  =300   Enter        Down
+  =120   Enter        Down, Down
+
+On B5, next to Total:
+  =@sum(B0:B3)  Enter
+
+B5 shows 2070.00. Change any number (move to it, =, new value,
+Enter) and the total follows at once.
+
+
+4. PERCENTAGES, AND COPYING A FORMULA
+Move to C0 and type
+  =B0/B$5  Enter
+That's this row's amount over the total. The $ in B$5 means "always
+row 5": when the formula is copied, B0 will become B1, B2 and so on,
+but B$5 stays put.
+
+Now copy it down. With the cursor still on C0:
+  m a        marks C0 as "a" (m, then the letter a)
+  Down, c a  copies mark a into C1
+  Down, c a  C2
+  Down, c a  C3
+  Down, Down, c a   C5
+
+Column C shows 0.58, 0.22, 0.14, 0.06 and, next to Total, 1.00.
+
+
+5. MAKE IT LOOK RIGHT
+f sets the format of the whole column you're on: f, Space, then
+width, decimals and a format number, then Enter.
+  On column C:  f  Space  8 1 9  Enter     shows 58.0%, 21.7%...
+  On column B:  f  Space  11 2 8 Enter     shows $1,200.00...
+
+Format 9 (percent) and 8 (money) come from scrc.txt in /sc; SC.TXT,
+FORMATS, lists the others, including dates.
+
+
+6. ADD A ROW IN THE MIDDLE
+Forgot the phone bill? Move to the Car row and type
+  i r        insert a row above the cursor
+Then put the new line in: Left to column A, <Phone Enter, Right,
+=65 Enter. The total becomes 2135.00 by itself: sc stretched
+@sum(B0:B3) to @sum(B0:B4) when the row went in. Copy the percent
+formula into the new row's C cell with c a, as before.
+
+d r deletes the row you're on, and the total shrinks to match.
+
+
+7. SAVE IT, CLOSE IT, OPEN IT
+  P budget.sc  Enter     saves (it goes in /sc on the card)
+  q                      back to the menu
+Start sc again, then
+  G budget.sc  Enter     opens it, formulas and all
+
+To share it with a PC, also save a copy as CSV:
+  P budget.csv  Enter
+A .csv keeps the numbers you see but not the formulas, so keep the
+.sc file as your working copy.
+
+
+8. WHEN YOU'RE STUCK
+  Esc          backs out one step; twice cancels a line you're typing
+  Ctrl+g       cancels whatever you're in the middle of
+  ?            help, 16 pages (a letter picks one; Esc leaves)
+  i> / e>      the start of the top line: i> means you're typing,
+               e> means letters are commands (Esc gets you there;
+               i or A gets you back to typing)
+
+There is no undo. Save before big changes (P, same name, Enter).
+
+
+9. WHERE NEXT
+- The four sample sheets in /sc: budget.sc, loan.sc (a loan with a
+  payment table), dates.sc and convert.sc. Open each with G and
+  look at the formulas on the top line as you move around.
+- Help page K lists everything you can put in a formula; pages L
+  to P list the functions (@sum, @avg, @pmt, @date and the rest).
+- Sheets can be written on a PC in Notepad; SC.TXT, BUILDING
+  SHEETS ON THE PC, shows how.
