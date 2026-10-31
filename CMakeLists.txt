@@ -14,11 +14,22 @@ set(SC_SRC abbrev cmds color crypt format frame gram help interp lex pipe
 list(TRANSFORM SC_SRC PREPEND sc/)
 list(TRANSFORM SC_SRC APPEND .c)
 
+# The SD card: the text starter (v0.17 and later) uses ChaN's FatFs, built
+# as its own CMakeLists.txt does, from the Pico SDK's copy with the
+# starter's ffconf.h
+set(FATFS_SRC ${PICO_SDK_PATH}/lib/tinyusb/lib/fatfs/source)
+set(FATFS_DIR ${CMAKE_BINARY_DIR}/fatfs)
+foreach(f ff.c ff.h ffunicode.c diskio.h)
+    configure_file(${FATFS_SRC}/${f} ${FATFS_DIR}/${f} COPYONLY)
+endforeach()
+configure_file(${DRV}/fatfs/ffconf.h ${FATFS_DIR}/ffconf.h COPYONLY)
+
 add_executable(picocalc-sc
     ${SC_SRC}
     port/curses.c port/csv.c port/port.c port/be_pico.c port/main_pico.c port/os_pico.c
-    ${DRV}/audio.c ${DRV}/clib.c ${DRV}/fat32.c ${DRV}/font-5x10.c ${DRV}/font-8x10.c
+    ${DRV}/audio.c ${DRV}/clib.c ${DRV}/font-5x10.c ${DRV}/font-8x10.c
     ${DRV}/keyboard.c ${DRV}/lcd.c ${DRV}/sdcard.c ${DRV}/southbridge.c
+    ${DRV}/diskio.c ${DRV}/filesystem.c ${FATFS_DIR}/ff.c ${FATFS_DIR}/ffunicode.c
 )
 # sc's own code: old C, quiet its warnings; its main() is called by ours
 set_source_files_properties(${SC_SRC} port/csv.c PROPERTIES COMPILE_OPTIONS "-w;-include;${CMAKE_CURRENT_LIST_DIR}/port/os_pico.h")
@@ -33,14 +44,15 @@ target_include_directories(picocalc-sc PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/port ${CMAKE_CURRENT_LIST_DIR}/sc ${CMAKE_CURRENT_LIST_DIR}/port/fake
     ${CMAKE_CURRENT_LIST_DIR}/modules/picocalc-text-starter
     ${CMAKE_CURRENT_LIST_DIR}/modules/picocalc-text-starter/drivers
-    ${CMAKE_CURRENT_LIST_DIR}/modules/picocalc-shell/include)
+    ${CMAKE_CURRENT_LIST_DIR}/modules/picocalc-shell/include
+    ${FATFS_DIR})
 # files named without a path go in /sc
 target_link_options(picocalc-sc PRIVATE -Wl,--wrap=_open -Wl,--wrap=_stat -Wl,--wrap=_unlink -Wl,--wrap=rename)
 pico_set_program_name(picocalc-sc "sc")
 pico_enable_stdio_uart(picocalc-sc 0)
 pico_enable_stdio_usb(picocalc-sc 0)
 target_link_libraries(picocalc-sc pico_stdlib hardware_gpio hardware_i2c hardware_spi
-    hardware_pio hardware_clocks hardware_watchdog pico_multicore pico_aon_timer)
+    hardware_pio hardware_clocks hardware_watchdog hardware_powman pico_multicore pico_aon_timer)
 pico_generate_pio_header(picocalc-sc ${CMAKE_CURRENT_LIST_DIR}/${DRV}/audio.pio)
 # sc formats numbers with printf: use newlib's complete printf, not the
 # SDK's small one (which prints %f above 1e9 in exponent form, and

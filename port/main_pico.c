@@ -14,7 +14,7 @@
 #include "drivers/keyboard.h"
 #include "drivers/southbridge.h"
 #include "drivers/audio.h"
-#include "drivers/fat32.h"
+#include "drivers/filesystem.h"
 #include "pico/aon_timer.h"
 #include "hardware/watchdog.h"
 #include <time.h>
@@ -119,13 +119,12 @@ int main(void)
 {
 	sb_init();
 	lcd_init();
-	fat32_init();
+	fs_init();
 	keyboard_init();
 	keyboard_set_background_poll(true);
 	audio_init();
 
-	fat32_file_t d;
-	if (fat32_dir_create(&d, SC_DIR) == FAT32_OK) fat32_close(&d);
+	f_mkdir(SC_DIR);		/* (FR_EXIST if it's there) */
 	setenv("HOME", SC_DIR, 1);
 	setenv("TERM", "picocalc", 1);
 	read_cfg();
